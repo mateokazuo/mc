@@ -1,4 +1,4 @@
-const marge = {dalt: 30, dreta: 30, baix: 30, esquerra: 30},
+const marge = {dalt: 30, dreta: 30, baix: 30, esquerra: 300},
 	alçada = 820 - marge.dalt - marge.baix,
 	amplada = alçada;
 
@@ -20,7 +20,7 @@ d3.csv("vrx.csv", function(d) {
 });
 
 function caminar() {
-	d3.json("camins.json").then(dibuixar);
+	d3.json("camins.json").then(primer);
 }
 
 function escales(rcrX, rcrZ, ranX=[0,amplada], ranZ=[0, alçada]) {
@@ -92,7 +92,7 @@ function camins(fons, dades, esc) {
 			.attr('fill', 'none')
 			.attr('opacity', d => d.opc)
 			.attr('classe', d => d.cls)
-			.attr('zona', d => d.zon);
+			.attr('class', d => d.zon);
 	return 0;
 }
 
@@ -136,6 +136,19 @@ function amagatall(fons, pts, trc, esc){
 	const defZ = esc.z(rcrZ[0])-ple;
 	const defAlç = esc.z(rcrZ[1])-esc.z(rcrZ[0])+2*ple;
 	const defAmp = esc.x(rcrX[1])-esc.x(rcrX[0])+2*ple;
+	const dX = 500;
+	const dZ = 300;
+	const veuX = defX-dX;
+	const veuZ = defZ-dZ;
+	const veuAlç = defAlç+dZ;
+	const veuAmp = defAmp+dX;
+	const mPle = 10;
+	const escIn = escales(rcrX, rcrZ, [defX,defX+defAmp], [defZ,defZ+defAlç]);
+	const camIn = trc.map(d => linP(d, escIn));
+	const porIn = pts.map(d => recP(pts, escIn));
+	const escVe = escales(rcrX, rcrZ, [veuX+mPle,veuX+veuAmp-mPle], [veuZ+mPle,veuZ+veuAlç-mPle]);
+	const camVe = trc.map(d => linP(d, escVe));
+	const porVe = pts.map(d => recP(d, escVe));
 	capa = fons.append('rect')
 			.attr('x', defX)
 			.attr('y', defZ)
@@ -147,38 +160,60 @@ function amagatall(fons, pts, trc, esc){
 			.attr('stroke', 'black')
 			.attr('stroke-width', 3)
 			.attr('classe', 'capa')
-			.attr('defX', defX)
-			.attr('defZ', defZ)
-			.attr('defAlç', defAlç)
-			.attr('defAmp', defAmp)
-			.on('mouseover', veure)
-			.on('mouseleave', amagar);
+			.attr('defX', defX).attr('defZ', defZ)
+			.attr('defAlç', defAlç).attr('defAmp', defAmp)
+			.attr('veuX', veuX).attr('veuZ', veuZ)
+			.attr('veuAlç', veuAlç).attr('veuAmp', veuAmp)
+			.on('mouseover', function(event) {
+				veure(camVe, porVe);
+			})
+			.on('mouseleave', function(event) {
+				amagar(camIn, porIn);
+			});
 }
 
-function veure(event) {
-	const T = 100;
-	const dX = 500;
-	const dY = 300;
-	capa.transition()
-		.duration(100)
-		.ease(d3.easeCubic)
-		.attr('x', +capa.attr('x')-dX)
-		.attr('y', +capa.attr('y')-dY)
-		.attr('height', +capa.attr('height')+dY)
-		.attr('width', +capa.attr('width')+dX);
+const T = 300;
+function veure(cam, por) {
+	const x = +capa.attr('veuX');
+	const y = +capa.attr('veuZ');
+	const alç = +capa.attr('veuAlç');
+	const amp = +capa.attr('veuAmp');
+	capa.transition().duration(T).ease(d3.easeCubic)
+		.attr('x', x)
+		.attr('y', y)
+		.attr('height', alç)
+		.attr('width', amp);
+	llenç.selectAll('path')
+		.filter(function() {return this.classList.contains('v')})
+		.transition().duration(T).ease(d3.easeCubic)
+		.attr('d', (d,i) => línia(cam[i]))
+		.attr('stroke', 'forestgreen')
+		.attr('stroke-width', 3);
+	llenç.selectAll('path')
+	.filter(function() {return this.classList.contains('v')})
+		.attr('opacity', 1);
 }
 
-function amagar(event, d) {
+function amagar(cam, por) {
 	capa.transition()
-		.duration(100)
+		.duration(T)
 		.ease(d3.easeCubic)
 		.attr('x', +capa.attr('defX'))
 		.attr('y', +capa.attr('defZ'))
 		.attr('height', +capa.attr('defAlç'))
 		.attr('width', +capa.attr('defAmp'));
+	llenç.selectAll('path')
+		.filter(function() {return this.classList.contains('v')})
+		.transition().duration(T).ease(d3.easeCubic)
+		.attr('d', (d,i) => línia(cam[i]))
+		.attr('stroke', 'none')
+		.attr('stroke-width', 0);
+	llenç.selectAll('path')
+		.filter(function() {return this.classList.contains('v')})
+		.attr('opacity', 0);
 }
 
-function dibuixar(traces) {
+function primer(traces) {
 	const rcrX = d3.extent(punts.map(d => d.xPos));
 	const rcrZ = d3.extent(punts.map(d => d.zPos));
 	let ranX=[0,alçada*(rcrX[1]-rcrX[0])/(rcrZ[1]-rcrZ[0])];
@@ -191,4 +226,7 @@ function dibuixar(traces) {
 	let amT = traces.filter(d => d.zona === 'v');
 	let amP = punts.filter(d => d.classe=== 'z');
 	amagatall(llenç, amP, amT, esc);
+	camins(llenç, amT, esc);
+	portals(llenç, amP, esc);
 }
+
