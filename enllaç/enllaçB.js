@@ -1,5 +1,9 @@
 var fet = false;
 
+function mira (cosa) {
+	console.log(JSON.parse(JSON.stringify(cosa)));
+}
+
 var Mides;
 var Amplada = 800;
 var Alçada = 800;
@@ -49,7 +53,7 @@ d3.csv('vrx.csv', function(d) {
 });
 
 function caminar() {
-	d3.json('camins.json').then(primer);
+	d3.json('camins.json').then(novaEscala);
 }
 
 function escales(rcrX, rcrZ, ranX=[0,Amplada], ranZ=[0, Alçada]) {
@@ -84,9 +88,9 @@ function escales(rcrX, rcrZ, ranX=[0,Amplada], ranZ=[0, Alçada]) {
 function camí(dada, parades) {
 	// dada és un camí
 	let traça = dada.traça;
-	let traçat = traça.map(pt => parades.find(d => d.id === pt));
-	let xCoords = traçat.map(d => d.x);
-	let zCoords = traçat.map(d => d.y);
+	let traçat = traça.map(pt => parades.find(d => d.codi === pt));
+	let xCoords = traçat.map(d => d.xPos);
+	let zCoords = traçat.map(d => d.zPos);
 	return {xCoords: xCoords, zCoords: zCoords};
 }
 
@@ -129,7 +133,7 @@ function recP(dada, esc) {
 	let radi = esc.rad(dada.classe);
 	let xPos = esc.x(dada.xPos);
 	let yPos = esc.z(dada.zPos);
-	return{alç:alçada, amp:amplada, r:radi, x:xPos, y:yPos, cls:dada.classe, id:dada.codi};
+	return{alç:alçada, amp:amplada, r:radi, xPos:xPos, zPos:yPos, cls:dada.classe, codi:dada.codi};
 }
 
 function portals(fons, rects) {
@@ -231,6 +235,10 @@ function amagar(cam, por) {
 
 var realL, realP, bonicL, bonicP;
 
+function novaEscala(dades) {
+	bonic(dades, punts);
+}
+
 function primer(dades) {
 	let rcrX = d3.extent(punts.map(d => d.xPos));
 	let rcrZ = d3.extent(punts.map(d => d.zPos));
@@ -266,7 +274,7 @@ function cRel(línia, dada) {
 	// dada són xCoords,zCoords corresponents
 	let dx, dy, lon, dir;
 	let rCam = Array(dada.xCoords.length).fill(0);
-	for (let i = coords.length-1; i > 0; i--) {
+	for (let i = rCam.length-1; i > 0; i--) {
 		dx = dada.xCoords[i]-dada.xCoords[i-1];
 		dy = dada.zCoords[i]-dada.zCoords[i-1];
 		if (dx === dy) {throw new Error("Línia nul·la.")}
@@ -277,16 +285,16 @@ function cRel(línia, dada) {
 			lon = dx;
 			if (lon > 0) {dir = 'e'} else {dir = 'o'}
 		} else {throw new Error("Línia no ortogonal.")}
-		coords[i] = {l:Math.abs(lon), dir:dir, est:línia.traça[i]};
+		rCam[i] = {lon:Math.abs(lon), dir:dir, est:línia.traça[i]};
 	}
 	línia.ori = línia.traça[0];
-	línia.lin = coords.slice(1);
+	línia.lin = rCam.slice(1);
 	return línia;
 }
 
-function eRel(línia, dir, esc) {
+function eRel(línia, esc) {
 	let escala;
-	switch(dir) {
+	switch(línia.dir) {
 		case 'n':
 			escala = esc.Zn;
 			break;
@@ -298,14 +306,16 @@ function eRel(línia, dir, esc) {
 			break;
 		case 'o':
 			escala= esc.Xn;
+			break;
 		default:
 			throw new Error("Direcció inesperada.")
 	}
-	return escala(línia);
+	línia.lon = escala(línia.lon);
+	return línia;
 }
 
 function dRel(línia, esc) {
-	línia.lin = línia.lin.map((d, i) => eRel(d, línia[i].dir, esc));
+	línia.lin = línia.lin.map((d, i) => eRel(d, esc));
 	return línia;
 }
 
@@ -316,22 +326,46 @@ function puntsBonics(pVells, lNoves) {
 	pNous[0].zPos = alçada/2;
 	pNous[0].bonic= 1;
 	let bellesa = [0]; // índexs embellits
-
 	let camins, existeix;
 	let iters = 0;
-	while (bellesa.length < N && iters < 1000000){
+	let x, z, cam, idx;
+	const maxit = N;
+	while (bellesa.length < N && iters < maxit){
 		for (let i=0; i<N; i++) {
 			if (!bellesa.includes(i)) {
-				camins = lNoves.filter(d => d.lin.includes(pNous[i].codi));
-				existeix = camins.find(d => bellesa.includes(d.ori));
+				camins = lNoves.filter(d => d.lin.map(f => f.est).includes(pNous[i].codi));
+				existeix = camins.find(d => bellesa.includes(pNous.findIndex(f => f.codi===d.ori)));
 				if (existeix != undefined) {
 					// fer camí des d'ori fins a i
-					// afegir tot el recorregut ori->i a bellesa
+					cam = existeix.lin;
+					x = pNous[0].xPos;
+					z = pNous[0].zPos;
+					for (let j=0; j<cam.length; j++) {
+						if (cam[j].dir==='n') {
+							z -= cam[j].lon;
+						} else if (cam[j].dir==='s') {
+							z += cam[j].lon;
+						} else if (cam[j].dir==='e') {
+							x += cam[j].lon;
+						} else if (cam[j].dir==='o') {
+							x -= cam[j].lon;
+						} else {
+							throw new Error("Direcció inesperada.");
+						}
+						idx = pNous.findIndex(d => d.codi===cam[j].est);
+						pNous[idx].xPos = x;
+						pNous[idx].zPos = z;
+						bellesa.push(idx);
+					}
 				}
 			}
 		}
 		iters += 1;
 	}
+	if (iters === maxit) {
+		throw new Error('Iteracions màximes.')
+	}
+	return pNous;
 }
 
 function regleBonic(dada, parades){
@@ -340,6 +374,7 @@ function regleBonic(dada, parades){
 
 let ranXX = [amplada/4, amplada/2];
 let ranZZ = [alçada/4, alçada/2];
+let pBonics, lBoniques;
 function bonic(línies, parades) {
 	// línies, parades són fitxers importats
 	var lCoords = línies.map(d => camí(d, parades));
@@ -348,8 +383,20 @@ function bonic(línies, parades) {
 	let rcrXn = d3.extent(línies.flatMap(d => d.lin.filter(f => f.dir === 'o').map(f => Math.abs(f.lon))));
 	let rcrZp = d3.extent(línies.flatMap(d => d.lin.filter(f => f.dir === 's').map(f => Math.abs(f.lon))));
 	let rcrZn = d3.extent(línies.flatMap(d => d.lin.filter(f => f.dir === 'n').map(f => Math.abs(f.lon))));
-	let esc = escBon(rcrXp, ranXX, rcrXn, ranXX, rcrZp, ranZZ, rcrZn, ranZZ);
-	línies = línies.map(d => dRel(d, esc));
+	let escT = escBon(rcrXp, ranXX, rcrXn, ranXX, rcrZp, ranZZ, rcrZn, ranZZ);
+	línies = línies.map(d => dRel(d, escT));
+	let pNous = puntsBonics(parades, línies);
+
+	let rcrX = d3.extent(pNous.map(d => d.xPos));
+	let rcrZ = d3.extent(pNous.map(d => d.zPos));
+	let ranX=[0,amplada];
+	let ranZ=[0, alçada];
+	let esc = escales(rcrX, rcrZ, ranX, ranZ);
+	pBonics = pNous.map(d => recP(d, esc));
+	lBoniques= línies.map(d => linP(d, esc, pBonics, regle1));
+	mira(pBonics)
+	dibuixar(lBoniques, pBonics);
+
 }
 
 function dibuixar(línies, parades) {
