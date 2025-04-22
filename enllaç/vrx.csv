@@ -1,43 +1,43 @@
-idn,classe,nom,codi,xPos,zPos
-0,e,València Base Nova,vlc,0,-1356
-1,s,Centre de Bescanvi,bes,-413,-1920
-2,s,Granja d'Or,gor,-1230,-2600
-3,g,Granja d'Arbres,arb,226,-1244
-4,g,Granja de Monstres,mon,221,-1266
-6,g,Portal del Fi,pfi,-200,-1373
-7,g,Granja de Guardians,grd,-176,-1024
-8,z,El Vallès,vll,-50,-50
-9,z,Sabadell Base Antiga,sbd,-36,-38
-10,z,Sabadell Mercat Central,cmc,-14,-34
-11,z,Sant Cugat Monestir,tpl,4,-28
-12,z,Vallès Indústria de Ferro,fer,8,-15
-13,z,Bellaterra Granja de Carbasses,car,-10,24
-14,z,Sant Quirze Centre del Món,sqv,-34,-6
-15,g,Granja de Bruixes,brx,-100,70
-16,g,Cerdanya Explotació Glacial,pic,-150,150
-17,g,Duplicador de Sorra,srr,-166,-102
-18,p,Granja de Flors,flr,-182,-94
-19,g,Cerdanya Segona Residència,cab,-184,300
-20,p,Cerdanya Granja de Gel,gel,-236,298
-21,x,int gel,xgel,-184,298
-22,x,int2 cab,ycab,-184,138
-23,x,int1 cab,xcab,-150,138
-24,x,fi c58,f58,-166,-50
-25,x,int flors,xflr,-166,-94
-26,x,int bruixes,xbrx,-100,-50
-27,x,inici c58,c58,0,-50
-28,x,int guardians,xgrd,0,-1024
-29,x,int fi,xpfi,-200,-1356
-30,x,int est,xest,226,-1356
-31,x,int monstres,xmon,226,-1266
-32,x,int bescanvi,xbes,0,-1920
-33,x,int or,xgor,0,-2600
-34,x,int sbd,xsbd,-50,-38
-35,x,int sqv,xsqv,-34,-34
-36,x,int1 car,xcar,-26,-34
-37,x,int2 car,ycar,-26,24
-38,x,int cmc,xcmc,-36,-34
-39,x,int tpl,xtpl,-14,-28
-40,x,int1 fer,xfer,4,-24
-41,x,int2 fer,yfer,8,-24
-42,x,int pic,xpic,-150,-50
+idn,classe,espai,nom,codi,xPos,zPos
+0,e,ad,València<br><i>Base Nova</i>,vlc,0,-1356
+1,s,ee,Nova York<br><i>Centre de Bescanvi</i>,bes,-413,-1920
+2,s,bb,Cusco<br><i>Granja d'Or</i>,gor,-1230,-2600
+3,g,bd,Múrcia<br><i>Granja de Fusta</i>,arb,226,-1244
+4,g,ad,Múrcia<br><i>Granja de Monstres</i>,mon,221,-1266
+6,g,ee,Extremadura<br><i>Portal del Fi</i>,pfi,-200,-1373
+7,g,ee,Madrid<br><i>Granja de Guardians</i>,grd,-176,-1024
+8,a,bd,El Vallès,vll,-50,-50
+9,ap,dd,Sabadell<br><i>Base Antiga</i>,sbd,-36,-38
+10,ap,dd,Sabadell<br><i>Mercat Central</i>,cmc,-14,-34
+11,ap,dd,Sant Cugat<br><i>Monestir</i>,tpl,4,-28
+12,ap,dd,Terrassa<br><i>Indústria<br>de Ferro</i>,fer,8,-15
+13,ap,bb,Bellaterra<br><i>Granja de<br>Carbasses</i>,car,-10,24
+14,as,ee,Sant Quirze<br><i>Centre del Món</i>,sqv,-34,-6
+15,g,dd,Garrotxa<br><i>Granja de Bruixes</i>,brx,-100,70
+16,g,bd,Cerdanya<br><i>Explotació Glacial</i>,pic,-150,150
+17,g,aa,Güeldes<br><i>Duplicador de Sorra</i>,srr,-166,-102
+18,p,ee,Holanda<br><i>Granja de Flors</i>,flr,-182,-94
+19,g,bd,Cerdanya<br><i>Segona Residència</i>,cab,-184,300
+20,p,ae,Cerdanya<br><i>Granja de Gel</i>,gel,-236,298
+21,x,xx,int gel,xgel,-184,298
+22,x,xx,int2 cab,ycab,-184,138
+23,x,xx,int1 cab,xcab,-150,138
+24,x,xx,fi c58,f58,-166,-50
+25,x,xx,int flors,xflr,-166,-94
+26,x,xx,int bruixes,xbrx,-100,-50
+27,x,xx,inici c58,i58,0,-50
+28,x,xx,int guardians,xgrd,0,-1024
+29,x,xx,int fi,xpfi,-200,-1356
+30,x,xx,int est,xest,226,-1356
+31,x,xx,int monstres,xmon,226,-1266
+32,x,xx,int bescanvi,xbes,0,-1920
+33,x,xx,int or,xgor,0,-2600
+34,ax,xx,int sbd,xsbd,-50,-38
+35,ax,xx,int sqv,xsqv,-34,-34
+36,ax,xx,int1 car,xcar,-26,-34
+37,ax,xx,int2 car,ycar,-26,24
+38,ax,xx,int cmc,xcmc,-36,-34
+39,ax,xx,int tpl,xtpl,-14,-28
+40,ax,xx,int1 fer,xfer,4,-24
+41,ax,xx,int2 fer,yfer,8,-24
+42,x,xx,int pic,xpic,-150,-50
