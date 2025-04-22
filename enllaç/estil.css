@@ -1,0 +1,51 @@
+body {
+	font-family: Helvetica
+}
+
+.radio {
+	margin: auto;
+}
+
+a.menu {
+	display: inline-block;
+}
+
+a.menu:link, a.menu:visited {
+	color: #550055;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+	background-color: #e2c2cd;
+	padding: 20px 15px;
+	height: 100%;
+	text-decoration: none;
+	float: left;
+}
+
+a.menu:hover {
+	background-color: #ee7799;
+}
+
+a.menu:active {
+	background-color: #f16180;
+}
+
+a.menu.aq {
+	background-color: #f16180;
+}
+a.menu.aq:hover {
+	cursor: default;
+	background-color: #f16180;
+}
+
+a.menu.bloc {
+	opacity: 0.5;
+	cursor: default;
+}
+a.menu.bloc:hover {
+	background-color: #e2c2cd;
+}
+
+#plànol {
+	background-color: #e2c2cd;
+}

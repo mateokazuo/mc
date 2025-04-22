@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html lang='ca'>
+
+<head>
+<style>
+</style>
+<meta charset='utf-8'>
+<script src='https://d3js.org/d3.v6.js'></script>
+<title>Enllaç de l'Avenc</title>
+<link rel='stylesheet' href='estil.css'>
+<link rel='icon type='image/x-icon' href='favicon.ico'></link>
+</head>
+
+<body style='overflow-x: hidden; overflow-y: hidden; margin: 0; height: 100vh; width: 100vw;'>
+
+<div id='amunt'>
+
+<div class='menu'>
+<a href='http://127.0.0.1:8000/principal.html#' class='menu'> Pàgina principal</a>
+<a href='#' class='menu'>Mapa del món</a>
+<a href='#' class='menu aq' title='Aquesta pàgina'>Mapa de l'Enllaç</a>
+<a href='#' class='menu bloc' title='Encara no disponible!'>Estadístiques</a>
+</div>
+
+<div id='escala' class='radio'>
+Escala<br>
+<input type='radio' name='escala' value='bonic' checked> Detall<br>
+<input type='radio' name='escala' value='real'> Real<br>
+</div>
+
+</div>
+
+<div id='plànol' style='width: 100%; height: 100%; margin: 0; position: relative;'></div>
+
+<script type='module' src='enllaçB.js'></script>
+
+</body>
+
+</html>
