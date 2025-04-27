@@ -1,0 +1,119 @@
+body {
+	font-family: Helvetica;
+	margin: 0;
+}
+
+#adprin {
+	font-family: 'MinecraftiaRegular', 'courier new';
+	width: 100vw;
+	font-size: 7.8vw;
+	justify-content: center;
+	text-align: center;
+
+}
+
+#amunt {
+	display: flex;
+	color: #550055;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.inter {
+	display: flex;
+	flex: 1;
+	height: 63px;
+	justify-content: center;
+	align-items: center;
+}
+
+.radio {
+	display: flex;
+	height: 100%;
+	width: 150px;
+	text-decoration: none;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.radio:hover {
+	cursor: default;
+}
+
+.menu {
+	height: 63px;
+	display: flex;
+	align-items: left;
+}
+
+a:active {
+	color: inherit;
+}
+
+a.menu:link, a.menu:visited {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	background-color: #e2c2cd;
+	width: 150px;
+	text-decoration: none;
+}
+
+a.menu:hover {
+	background-color: #ee7799;
+}
+
+a.menu:active {
+	background-color: #f16180;
+}
+
+a.menu.aq {
+	background-color: #f16180;
+}
+a.menu.aq:hover {
+	cursor: default;
+	background-color: #f16180;
+}
+
+a.menu.bloq {
+	opacity: 0.5;
+	cursor: default;
+}
+a.menu.bloq:hover {
+	background-color: #e2c2cd;
+}
+
+.plànol {
+	position: relative;
+	height: calc(100vh - 63px);
+	width: 100vw;
+	background-color: #e2c2cd;
+}
+
+
+@media (orientation: portrait) {
+	#amunt {
+		flex-direction: column;
+		font-size: 2vh;
+	}
+
+	.menu {
+		display: flex;
+		flex: 1;
+		justify-content: center;
+		align-items: center;
+		height: 63px;
+	}
+
+	.radio {
+		height: 63px;
+		width: 250px;
+	}
+
+	#avenc {
+		height: calc(100vh - 126px);
+	}
+
+}
